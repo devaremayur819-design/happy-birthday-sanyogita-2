@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Dr. Sanyogita ❤️</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap');
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body { font-family: 'Poppins', sans-serif; background: linear-gradient(-45deg, #ff758c, #ff7eb3, #efd5ff, #c1dfc4, #b5e2fa); background-size: 400% 400%; animation: gradientBG 15s ease infinite; min-height: 100vh; display: flex; justify-content: center; align-items: center; overflow: hidden; color: #2c3e50; }
+@keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+#canvas-container { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+.screen { position: absolute; width: 90%; max-width: 450px; background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.6); box-shadow: 0 12px 32px rgba(255, 117, 140, 0.2); padding: 35px 25px; text-align: center; display: none; opacity: 0; transform: scale(0.9); transition: opacity 0.6s ease, transform 0.6s ease; z-index: 10; pointer-events: none; }
+.screen.active { display: block; opacity: 1; transform: scale(1); pointer-events: auto; }
+h1, h2 { font-family: 'Dancing Script', cursive; font-size: 2.5rem; color: #d63384; margin-bottom: 15px; text-shadow: 1px 1px 2px rgba(0,0,0,0.05); }
+p { font-size: 1.05rem; line-height: 1.6; margin-bottom: 25px; color: #4a5568; font-weight: 400; }
+.btn-container { display: flex; flex-direction: column; gap: 15px; justify-content: center; align-items: center; width: 100%; margin-top: 20px; }
+.btn-row { display: flex; gap: 15px; width: 100%; justify-content: center; }
+.btn { padding: 14px 28px; font-size: 1rem; font-weight: 600; border: none; border-radius: 50px; cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); background: white; color: #ff5e7e; box-shadow: 0 4px 15px rgba(255, 94, 126, 0.2); border: 1px solid rgba(255, 94, 126, 0.2); display: inline-flex; align-items: center; justify-content: center; text-decoration: none; outline: none; }
+.btn:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(255, 94, 126, 0.4); background: #ff5e7e; color: white; }
+.btn-primary { background: #ff5e7e; color: white; border: none; }
+.btn-primary:hover { background: #ff416c; box-shadow: 0 8px 20px rgba(255, 65, 108, 0.4); }
+#btn-no-playful { position: relative; transition: all 0.4s ease; white-space: nowrap; }
+.spinner { width: 50px; height: 50px; border: 5px solid rgba(255, 94, 126, 0.2); border-top-color: #ff5e7e; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 25px auto; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.searching-text { font-size: 1.1rem; font-weight: 600; color: #ff5e7e; letter-spacing: 1px; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+.detected-badge { display: inline-block; background: #4caf50; color: white; padding: 6px 16px; border-radius: 50px; font-size: 0.9rem; font-weight: 600; margin-top: 15px; animation: bounce 1s infinite alternate; opacity: 0; transform: scale(0.5); transition: all 0.5s ease; }
+.detected-badge.show { opacity: 1; transform: scale(1); }
+@keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-5px); } }
+.letter-box { background: rgba(255, 255, 255, 0.5); border-radius: 16px; padding: 20px; min-height: 250px; max-height: 380px; overflow-y: auto; text-align: left; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.4); box-shadow: inset 0 2px 10px rgba(0,0,0,0.02); }
+.letter-text { font-size: 1rem; line-height: 1.7; color: #34495e; white-space: pre-line; font-family: 'Poppins', sans-serif; }
+.cursor { display: inline-block; width: 2px; height: 1.1rem; background-color: #ff5e7e; margin-left: 2px; animation: blink 0.8s infinite; vertical-align: middle; }
+@keyframes blink { 50% { opacity: 0; } }
+.heart-pop, .sparkle-pop { position: absolute; pointer-events: none; animation: flyUp 4s linear forwards; color: rgba(255, 94, 126, 0.7); font-size: 1.5rem; z-index: 2; }
+@keyframes flyUp { 0% { transform: translateY(100vh) translateX(0) rotate(0deg) scale(0.5); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-10vh) translateX(var(--x-move)) rotate(var(--rot)) scale(var(--sc)); opacity: 0; } }
+.grand-title { font-size: 3rem; line-height: 1.2; margin-bottom: 20px; animation: popIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+@keyframes popIn { from { transform: scale(0.5); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.sub-text { font-size: 1.2rem; font-weight: 600; color: #ff416c; margin: 8px 0; }
+.signature { margin-top: 30px; font-size: 0.95rem; color: #7f8c8d; font-weight: 300; }
+.signature strong { color: #ff5e7e; font-size: 1.1rem; font-family: 'Dancing Script', cursive; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255, 94, 126, 0.3); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 94, 126, 0.5); }
+</style>
+</head>
+<body>
+
+<div id="canvas-container"></div>
+
+<div id="screen-1" class="screen active">
+    <div class="spinner"></div>
+    <div id="loading-text" class="searching-text">Searching for...</div>
+    <h1 style="margin-top: 15px; font-size: 2.8rem;">Dr. Sanyogita ❤️</h1>
+    <div id="badge" class="detected-badge">Birthday Detected 🎂</div>
+</div>
+
+<div id="screen-2" class="screen">
+    <h1>Happy Birthday<br>Dr. Sanyogita ❤️</h1>
+    <p>A little surprise made especially for you...</p>
+    <div class="btn-container">
+        <button class="btn btn-primary" onclick="nextScreen(3)">Open Surprise ❤️</button>
+    </div>
+</div>
+
+<div id="screen-3" class="screen">
+    <h2 style="font-size: 2rem; margin-bottom: 10px;">Question 1</h2>
+    <p style="font-weight: 600; color: #ff5e7e; font-size: 1.2rem;">Birthday girl...</p>
+    <p>Are you smiling right now? 😊</p>
+    <div class="btn-container btn-row">
+        <button class="btn" onclick="nextScreen(4)">Yes 😄</button>
+        <button class="btn" onclick="nextScreen(4)">Not yet 🙂</button>
+    </div>
+</div>
+
+<div id="screen-4" class="screen">
+    <h2 style="font-size: 2rem; margin-bottom: 10px;">Question 2</h2>
+    <p>Have you made your birthday wish yet? ✨</p>
+    <div class="btn-container btn-row">
+        <button class="btn" onclick="nextScreen(5)">Yes ⭐</button>
+        <button class="btn" onclick="nextScreen(5)">Not yet 🤫</button>
+    </div>
+</div>
+
+<div id="screen-5" class="screen">
+    <h2 style="font-size: 2rem; margin-bottom: 10px;">Question 3</h2>
+    <p style="font-weight: 600; color: #ff5e7e; font-size: 1.2rem;">Doctor...</p>
+    <p>Can I wish you one more Happy Birthday? ❤️</p>
+    <div class="btn-container btn-row" id="q3-btn-container" style="position: relative; height: 120px; width: 100%;">
+        <button class="btn" id="btn-yes-fixed" onclick="nextScreen(6)" style="position: absolute; left: 15%; top: 35px;">Of course ❤️</button>
+        <button class="btn" id="btn-no-playful" onmouseover="moveNoButton()" onclick="handleNoClick()" style="position: absolute; right: 15%; top: 35px;">Why not 😊</button>
+    </div>
+</div>
+
+<div id="screen-6" class="screen">
+    <div class="letter-box">
+        <span id="typed-letter" class="letter-text"></span><span id="letter-cursor" class="cursor"></span>
+    </div>
+    <div class="btn-container" id="letter-btn-container" style="display: none;">
+        <button class="btn btn-primary" onclick="goToGrandFinale()">Continue</button>
+    </div>
+</div>
+
+<div id="screen-7" class="screen">
+    <h1 class="grand-title">🎂 Happy Birthday<br>Dr. Sanyogita ❤️</h1>
+    <div class="sub-text">Stay happy.</div>
+    <div class="sub-text">Stay healthy.</div>
+    <div class="sub-text">Keep smiling.</div>
+    <div class="sub-text">Keep shining.</div>
+    <div class="signature">
+        Made with ❤️<br>From<br><strong>Mayur 🌸</strong>
+    </div>
+</div>
+
+<script>
+let currentScreenIdx = 1;
+const totalScreens = 7;
+let noMoveCount = 0;
+const noButtonTexts = ["Nice try 😂", "Catch me first 😜", "Are you sure? 🤭", "Think again 😉", "Not today 😆"];
+
+const letterContent = `Happy Birthday, my friend 😌. ❤️
+
+I hope this year brings you endless happiness, beautiful memories, and lots of reasons to smile... other than me. 😀
+
+(Okay... maybe a few because of me too. 😏)
+
+I hope you achieve everything you've worked so hard for.
+
+I hope every patient leaves with a smile because of you.
+
+I hope you find the love of your life...
+
+Then again...
+
+Why look anywhere else when I'm already here? 👈😉❤️
+
+Happy Birthday once again,
+Dr. Sanyogita.
+
+— Mayur ❤️`;
+
+window.addEventListener('DOMContentLoaded', () => {
+    initEffects();
+    setTimeout(() => {
+        document.getElementById('badge').classList.add('show');
+        setTimeout(() => {
+            nextScreen(2);
+        }, 2000);
+    }, 2500);
+});
+
+function nextScreen(screenNum) {
+    const currentScreen = document.getElementById(`screen-${currentScreenIdx}`);
+    const nextScreenObj = document.getElementById(`screen-${screenNum}`);
+    
+    if (currentScreen) {
+        currentScreen.style.opacity = '0';
+        currentScreen.style.transform = 'scale(0.9)';
+        currentScreen.classList.remove('active');
+    }
+    
+    currentScreenIdx = screenNum;
+    
+    setTimeout(() => {
+        nextScreenObj.classList.add('active');
+        setTimeout(() => {
+            nextScreenObj.style.opacity = '1';
+            nextScreenObj.style.transform = 'scale(1)';
+            if(screenNum === 6) {
+                startTypewriter();
+            }
+        }, 50);
+    }, 400);
+}
+
+function moveNoButton() {
+    if (noMoveCount >= 5) return;
+    
+    const btnNo = document.getElementById('btn-no-playful');
+    const container = document.getElementById('q3-btn-container');
+    
+    const containerWidth = container.clientWidth;
+    const containerHeight = container.clientHeight;
+    const btnWidth = btnNo.clientWidth;
+    const btnHeight = btnNo.clientHeight;
+    
+    const maxX = containerWidth - btnWidth - 20;
+    const maxY = containerHeight - btnHeight - 10;
+    
+    let randomX = Math.max(10, Math.floor(Math.random() * maxX));
+    let randomY = Math.max(10, Math.floor(Math.random() * maxY));
+    
+    btnNo.style.left = `${randomX}px`;
+    btnNo.style.top = `${randomY}px`;
+    
+    btnNo.innerText = noButtonTexts[noMoveCount % noButtonTexts.length];
+    noMoveCount++;
+    
+    if (noMoveCount === 5) {
+        setTimeout(() => {
+            btnNo.style.position = 'relative';
+            btnNo.style.left = '0';
+            btnNo.style.top = '0';
+            btnNo.innerText = "Why not 😊";
+            const btnRow = document.createElement('div');
+            btnRow.className = 'btn-container btn-row';
+            btnRow.style.width = '100%';
+            btnRow.style.marginTop = '0';
+            
+            const btnYes = document.getElementById('btn-yes-fixed');
+            btnYes.style.position = 'relative';
+            btnYes.style.left = '0';
+            btnYes.style.top = '0';
+            
+            container.style.display = 'none';
+            
+            btnRow.appendChild(btnYes);
+            btnRow.appendChild(btnNo);
+            container.parentNode.appendChild(btnRow);
+        }, 800);
+    }
+}
+
+function handleNoClick() {
+    if (noMoveCount >= 5) {
+        nextScreen(6);
+    }
+}
+
+function startTypewriter() {
+    const textTarget = document.getElementById('typed-letter');
+    let idx = 0;
+    textTarget.innerHTML = '';
+    
+    function type() {
+        if (idx < letterContent.length) {
+            textTarget.innerHTML += letterContent.charAt(idx);
+            idx++;
+            const box = textTarget.parentNode;
+            box.scrollTop = box.scrollHeight;
+            setTimeout(type, 35);
+        } else {
+            document.getElementById('letter-cursor').style.display = 'none';
+            document.getElementById('letter-btn-container').style.display = 'flex';
+        }
+    }
+    setTimeout(type, 500);
+}
+
+function goToGrandFinale() {
+    nextScreen(7);
+    startGrandCelebration();
+}
+
+let canvas, ctx;
+let fireworks = [];
+let particles = [];
+let confetti = [];
+
+function initEffects() {
+    const container = document.getElementById('canvas-container');
+    canvas = document.createElement('canvas');
+    canvas.style.position = 'absolute';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    container.appendChild(canvas);
+    ctx = canvas.getContext('2d');
+    
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+    
+    setInterval(spawnAmbientElements, 400);
+    
+    requestAnimationFrame(animationLoop);
+}
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+
+function spawnAmbientElements() {
+    if (currentScreenIdx === 7) return; 
+    
+    const container = document.getElementById('canvas-container');
+    if(Math.random() > 0.4) {
+        const heart = document.createElement('div');
+        heart.className = 'heart-pop';
+        heart.innerHTML = Math.random() > 0.5 ? '❤️' : '💖';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.setProperty('--x-move', (Math.random() * 200 - 100) + 'px');
+        heart.style.setProperty('--rot', (Math.random() * 360) + 'deg');
+        heart.style.setProperty('--sc', Math.random() * 0.6 + 0.6);
+        heart.style.animationDuration = (Math.random() * 2 + 3) + 's';
+        container.appendChild(heart);
+        setTimeout(() => heart.remove(), 5000);
+    } else {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle-pop';
+        sparkle.innerHTML = '✨';
+        sparkle.style.left = Math.random() * 100 + 'vw';
+        sparkle.style.setProperty('--x-move', (Math.random() * 150 - 75) + 'px');
+        sparkle.style.setProperty('--rot', (Math.random() * 180) + 'deg');
+        sparkle.style.setProperty('--sc', Math.random() * 0.4 + 0.5);
+        sparkle.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        container.appendChild(sparkle);
+        setTimeout(() => sparkle.remove(), 4000);
+    }
+}
+
+class Firework {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = canvas.height;
+        this.tx = Math.random() * canvas.width;
+        this.ty = Math.random() * (canvas.height * 0.4) + canvas.height * 0.1;
+        this.vx = (this.tx - this.x) / 40;
+        this.vy = (this.ty - this.y) / 40;
+        this.hue = Math.random() * 360;
+        this.done = false;
+    }
+    update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        if (this.vy >= 0 || Math.abs(this.y - this.ty) < 5) {
+            this.done = true;
+            explodeFirework(this.x, this.y, this.hue);
+        }
+    }
+    draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = `hsl(${this.hue}, 100%, 70%)`;
+        ctx.fill();
+    }
+}
+
+class Particle {
+    constructor(x, y, hue) {
+        this.x = x;
+        this.y = y;
+        this.angle = Math.random() * Math.PI * 2;
+        this.speed = Math.random() * 5 + 2;
+        this.vx = Math.cos(this.angle) * this.speed;
+        this.vy = Math.sin(this.angle) * this.speed;
+        this.gravity = 0.1;
+        this.alpha = 1;
+        this.decay = Math.random() * 0.015 + 0.015;
+        this.hue = hue;
+    }
+    update() {
+        this.vx *= 0.98;
+        this.vy *= 0.98;
+        this.vy += this.gravity;
+        this.x += this.vx;
+        this.y += this.vy;
+        this.alpha -= this.decay;
+    }
+    draw() {
+        ctx.save();
+        ctx.globalAlpha = this.alpha;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = `hsl(${this.hue}, 100%, 60%)`;
+        ctx.fill();
+        ctx.restore();
+    }
+}
+
+class Confetti {
+    constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * -50 - 10;
+        this.size = Math.random() * 8 + 5;
+        this.vx = Math.random() * 2 - 1;
+        this.vy = Math.random() * 3 + 2;
+        this.rotation = Math.random() * 360;
+        this.rSpeed = Math.random() * 4 - 2;
+        this.color = `hsl(${Math.random() * 360}, 100%, 65%)`;
+    }
+    update() {
+        this.x += this.vx;
+        this.y += this.vy;
+        this.rotation += this.rSpeed;
+        if (this.y > canvas.height) {
+            this.y = -20;
+            this.x = Math.random() * canvas.width;
+        }
+    }
+    draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.rotation * Math.PI / 180);
+        ctx.fillStyle = this.color;
+        ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size);
+        ctx.restore();
+    }
+}
+
+function explodeFirework(x, y, hue) {
+    for (let i = 0; i < 60; i++) {
+        particles.push(new Particle(x, y, hue));
+    }
+}
+
+function startGrandCelebration() {
+    for (let i = 0; i < 100; i++) {
+        confetti.push(new Confetti());
+    }
+    setInterval(() => {
+        if (currentScreenIdx === 7 && fireworks.length < 5) {
+            fireworks.push(new Firework());
+        }
+    }, 600);
+}
+
+function animationLoop() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    if (currentScreenIdx === 7) {
+        for (let i = fireworks.length - 1; i >= 0; i--) {
+            fireworks[i].update();
+            if (fireworks[i].done) {
+                fireworks.splice(i, 1);
+            } else {
+                fireworks[i].draw();
+            }
+        }
+        for (let i = particles.length - 1; i >= 0; i--) {
+            particles[i].update();
+            if (particles[i].alpha <= 0) {
+                particles.splice(i, 1);
+            } else {
+                particles[i].draw();
+            }
+        }
+        for (let i = 0; i < confetti.length; i++) {
+            confetti[i].update();
+            confetti[i].draw();
+        }
+    }
+    requestAnimationFrame(animationLoop);
+}
+</script>
+</body>
+</html>
